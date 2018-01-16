@@ -49,9 +49,20 @@ public class MyUI extends UI {
     }
 
     public void sqlRequest(VerticalLayout layout, String word_for_search, GridLayout grid) {
-            String userName = "otinfo";
-            String password = "123456";
-            String url_db = "jdbc:weblogic:sqlserver://z14-0503-sql:62568;allowPortWithNamedInstance=true";
+        String userName = null;
+        String password = null;
+        String url_db = null;
+        Properties props = new Properties();
+        InputStream inputStream = MyUI.class.getClassLoader().getResourceAsStream("config.properties");
+        try {
+            props.load(inputStream);
+            userName = props.getProperty("userName_db");
+            password = props.getProperty("password_db");
+            url_db = props.getProperty("url_db");
+        } catch (IOException e) {
+            System.out.println("config.properties not found");
+            e.printStackTrace();
+        }
             try {
                 Connection conn = DriverManager.getConnection(url_db, userName, password);
                 Statement statement = conn.createStatement();
